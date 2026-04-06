@@ -5,7 +5,8 @@ import {
   Search, CheckCircle2, Shield, Zap, Server, 
   Globe, Headphones, ArrowRight, Menu, PlayCircle,
   Cloud, Cpu, RefreshCw, Lock, ChevronRight, Star,
-  DownloadCloud, UploadCloud, Activity
+  DownloadCloud, UploadCloud, Activity,
+  Compass, Database, Code, ShoppingBag, HelpCircle, MessageCircle
 } from 'lucide-react';
 import * as motion from 'motion/react-client';
 
@@ -42,8 +43,69 @@ export default function Home() {
         </div>
         
         <div className="hidden lg:flex items-center space-x-8">
-          {['Hosting', 'Domain', 'Server', 'Solutions', 'Tools'].map((item) => (
-            <a key={item} href="#" className="text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors flex items-center gap-1">
+          {/* Hosting Mega Menu */}
+          <div className="relative group">
+            <button className="text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors flex items-center gap-1 py-2">
+              Hosting <ChevronRight className="w-3 h-3 rotate-90 transition-transform group-hover:-rotate-90" />
+            </button>
+            
+            {/* Mega Menu Dropdown */}
+            <div className="absolute top-full left-[-100px] pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
+              <div className="w-[850px] bg-white rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-slate-100 flex overflow-hidden">
+                
+                {/* Left Side: Hosting Options */}
+                <div className="w-[65%] p-8 grid grid-cols-2 gap-x-6 gap-y-8">
+                  {[
+                    { icon: Server, title: 'Web Hosting', desc: 'NVMe SSD server' },
+                    { icon: Cloud, title: 'Cloud Hosting', desc: 'Fast autoscaling server' },
+                    { icon: Compass, title: 'WordPress Hosting', desc: 'Fully Managed WordPress' },
+                    { icon: Globe, title: 'Reseller Hosting', desc: 'Start your Business' },
+                    { icon: Database, title: 'BDIX Hosting', desc: 'Lowest Network Latency' },
+                    { icon: Zap, title: 'Turbo Hosting', desc: 'Fast Speed Guaranteed' },
+                    { icon: Code, title: 'Node.js Hosting', desc: 'JavaScript Runtime' },
+                    { icon: ShoppingBag, title: 'WooCommerce Hosting', desc: 'E-commerce Optimized' },
+                  ].map((item, idx) => (
+                    <a key={idx} href="#" className="flex items-start gap-4 group/item">
+                      <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center text-slate-500 group-hover/item:bg-green-50 group-hover/item:text-green-600 transition-colors flex-shrink-0">
+                        <item.icon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-900 group-hover/item:text-green-600 transition-colors">{item.title}</h4>
+                        <p className="text-xs text-slate-500 mt-1">{item.desc}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+
+                {/* Right Side: Support */}
+                <div className="w-[35%] bg-slate-50 p-8 border-l border-slate-100 flex flex-col">
+                  <div className="flex items-center gap-2 text-slate-900 font-bold mb-3">
+                    <HelpCircle className="w-5 h-5 text-green-600" />
+                    Need help choosing a plan?
+                  </div>
+                  <p className="text-xs text-slate-500 mb-6 leading-relaxed">
+                    Get instant help from our experts via WhatsApp. We&apos;re here for you 24/7!
+                  </p>
+                  
+                  <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-6 shadow-sm">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                      <span className="text-xs text-slate-500 font-medium">Online Now</span>
+                    </div>
+                    <p className="text-xs text-slate-500 mb-1">Chat with us on WhatsApp</p>
+                    <p className="text-lg font-black text-green-600">01750749652</p>
+                  </div>
+
+                  <button className="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-xl transition-colors flex items-center justify-center gap-2 shadow-md shadow-green-600/20 mt-auto">
+                    <MessageCircle className="w-4 h-4" /> Chat with Us
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {['Domain', 'Server', 'Solutions', 'Tools'].map((item) => (
+            <a key={item} href="#" className="text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors flex items-center gap-1 py-2">
               {item} <ChevronRight className="w-3 h-3 rotate-90" />
             </a>
           ))}
