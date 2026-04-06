@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import { 
   Search, CheckCircle2, Shield, Zap, Server, 
   Globe, Headphones, ArrowRight, Menu, PlayCircle,
@@ -18,6 +20,8 @@ const staggerContainer = {
 };
 
 export default function Home() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 overflow-x-hidden">
       
@@ -57,13 +61,37 @@ export default function Home() {
           </motion.a>
         </div>
 
-        <button className="lg:hidden text-slate-600 hover:text-green-600">
+        <button 
+          className="lg:hidden text-slate-600 hover:text-green-600"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
           <Menu className="w-6 h-6" />
         </button>
+
+        {/* Mobile Menu Dropdown */}
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="absolute top-full left-0 right-0 mt-4 p-4 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-xl lg:hidden flex flex-col gap-4"
+          >
+            {['Hosting', 'Domain', 'Server', 'Solutions', 'Tools'].map((item) => (
+              <a key={item} href="#" className="text-base font-semibold text-slate-700 hover:text-green-600 p-2 border-b border-slate-100">
+                {item}
+              </a>
+            ))}
+            <div className="flex flex-col gap-3 mt-2">
+              <a href="#" className="text-center text-base font-bold text-slate-700 hover:text-green-600 py-2">Login</a>
+              <a href="#" className="text-center py-3 text-base font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl">
+                Dashboard
+              </a>
+            </div>
+          </motion.div>
+        )}
       </motion.nav>
 
       {/* Hero Section with Animated Multi-Color Background */}
-      <section className="relative pt-40 pb-32 lg:pt-48 lg:pb-40 overflow-hidden rounded-b-[3rem] lg:rounded-b-[5rem] bg-white">
+      <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-40 overflow-hidden rounded-b-[3rem] lg:rounded-b-[5rem] bg-white">
         {/* Animated Background Blobs (Green/Teal/Emerald) */}
         <motion.div 
           animate={{ scale: [1, 1.2, 1], x: [0, 100, 0], y: [0, 50, 0] }}
@@ -184,19 +212,19 @@ export default function Home() {
           
           <div className="flex flex-col md:flex-row gap-4 mb-10">
             <div className="relative flex-grow">
-              <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-                <Search className="h-6 w-6 text-green-500" />
+              <div className="absolute inset-y-0 left-0 pl-4 sm:pl-6 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 sm:h-6 sm:w-6 text-green-500" />
               </div>
               <input 
                 type="text" 
-                className="block w-full pl-16 pr-6 py-5 bg-white border-2 border-slate-100 rounded-full text-lg focus:ring-4 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none font-medium shadow-inner" 
+                className="block w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-4 sm:py-5 bg-white border-2 border-slate-100 rounded-full text-base sm:text-lg focus:ring-4 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none font-medium shadow-inner" 
                 placeholder="yourdomain.com"
               />
             </div>
             <motion.button 
               whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(16, 185, 129, 0.4)" }}
               whileTap={{ scale: 0.95 }}
-              className="px-10 py-5 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-full transition-all whitespace-nowrap text-lg shadow-lg shadow-green-500/20"
+              className="w-full md:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-full transition-all whitespace-nowrap text-base sm:text-lg shadow-lg shadow-green-500/20"
             >
               Search
             </motion.button>
@@ -347,7 +375,7 @@ export default function Home() {
               </div>
 
               {/* Graphic Side */}
-              <div className="relative h-[400px] flex items-center justify-center">
+              <div className="relative h-[300px] lg:h-[400px] flex items-center justify-center mt-12 lg:mt-0 scale-90 sm:scale-100">
                 <motion.div 
                   animate={{ rotate: 360 }}
                   transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
@@ -360,15 +388,15 @@ export default function Home() {
                 />
                 
                 {/* Center Logo */}
-                <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-green-500/40 z-20 relative">
-                  <span className="text-5xl font-black text-white">H</span>
+                <div className="w-20 h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-green-500/40 z-20 relative">
+                  <span className="text-4xl lg:text-5xl font-black text-white">H</span>
                 </div>
 
                 {/* Orbiting Nodes */}
-                <motion.div animate={{ y: [-10, 10, -10] }} transition={{ duration: 3, repeat: Infinity }} className="absolute top-10 left-10 bg-white px-4 py-2 rounded-xl shadow-lg font-bold text-sm text-slate-700 border border-slate-100">HostGator</motion.div>
-                <motion.div animate={{ y: [10, -10, 10] }} transition={{ duration: 4, repeat: Infinity }} className="absolute bottom-10 right-10 bg-white px-4 py-2 rounded-xl shadow-lg font-bold text-sm text-slate-700 border border-slate-100">GoDaddy</motion.div>
-                <motion.div animate={{ y: [-8, 8, -8] }} transition={{ duration: 3.5, repeat: Infinity }} className="absolute top-20 right-0 bg-white px-4 py-2 rounded-xl shadow-lg font-bold text-sm text-slate-700 border border-slate-100">Namecheap</motion.div>
-                <motion.div animate={{ y: [8, -8, 8] }} transition={{ duration: 4.5, repeat: Infinity }} className="absolute bottom-20 left-0 bg-white px-4 py-2 rounded-xl shadow-lg font-bold text-sm text-slate-700 border border-slate-100">Hostinger</motion.div>
+                <motion.div animate={{ y: [-10, 10, -10] }} transition={{ duration: 3, repeat: Infinity }} className="absolute top-4 left-4 lg:top-10 lg:left-10 bg-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl shadow-lg font-bold text-xs lg:text-sm text-slate-700 border border-slate-100">HostGator</motion.div>
+                <motion.div animate={{ y: [10, -10, 10] }} transition={{ duration: 4, repeat: Infinity }} className="absolute bottom-4 right-4 lg:bottom-10 lg:right-10 bg-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl shadow-lg font-bold text-xs lg:text-sm text-slate-700 border border-slate-100">GoDaddy</motion.div>
+                <motion.div animate={{ y: [-8, 8, -8] }} transition={{ duration: 3.5, repeat: Infinity }} className="absolute top-16 -right-2 lg:top-20 lg:right-0 bg-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl shadow-lg font-bold text-xs lg:text-sm text-slate-700 border border-slate-100">Namecheap</motion.div>
+                <motion.div animate={{ y: [8, -8, 8] }} transition={{ duration: 4.5, repeat: Infinity }} className="absolute bottom-16 -left-2 lg:bottom-20 lg:left-0 bg-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl shadow-lg font-bold text-xs lg:text-sm text-slate-700 border border-slate-100">Hostinger</motion.div>
               </div>
             </div>
           </div>
@@ -384,7 +412,7 @@ export default function Home() {
             <p className="text-lg text-slate-600 font-medium">Real businesses sharing their Hostnin experience</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {[1, 2, 3].map((item) => (
               <motion.div 
                 key={item}
@@ -422,21 +450,21 @@ export default function Home() {
               <motion.button 
                 whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(16, 185, 129, 0.3)" }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-4 bg-green-600 text-white font-black rounded-full transition-all text-lg shadow-md"
+                className="w-full sm:w-auto px-8 sm:px-10 py-4 bg-green-600 text-white font-black rounded-full transition-all text-base sm:text-lg shadow-md"
               >
                 Get The Offer
               </motion.button>
               <motion.button 
                 whileHover={{ scale: 1.05, backgroundColor: "#f0fdf4" }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-4 bg-white border border-green-200 text-green-700 font-bold rounded-full transition-all text-lg shadow-sm"
+                className="w-full sm:w-auto px-8 sm:px-10 py-4 bg-white border border-green-200 text-green-700 font-bold rounded-full transition-all text-base sm:text-lg shadow-sm"
               >
                 Chat with an Expert
               </motion.button>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12 mb-16">
             <div className="col-span-2 lg:col-span-2">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
