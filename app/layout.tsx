@@ -2,8 +2,8 @@ import type {Metadata} from 'next';
 import './globals.css'; // Global styles
 
 export const metadata: Metadata = {
-  title: 'Domain Hosting BD',
-  description: 'Best Web Hosting Company in Bangladesh',
+  title: 'My Google AI Studio App',
+  description: 'My Google AI Studio App',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
