@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { 
   Search, CheckCircle2, Shield, Zap, Server, 
   Globe, Headphones, ArrowRight, Menu, PlayCircle,
@@ -225,8 +226,14 @@ export default function Home() {
 
             {/* Hero Graphic */}
             <div className="relative hidden lg:block">
-              <div className="relative w-full max-w-lg mx-auto">
-                <img src="https://picsum.photos/seed/domainhostingbdhero/600/600" alt="Hosting Expert" className="w-full h-auto rounded-2xl shadow-2xl object-cover" />
+              <div className="relative w-full max-w-lg mx-auto aspect-square">
+                <Image 
+                  src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop" 
+                  alt="Hosting Server" 
+                  fill
+                  referrerPolicy="no-referrer"
+                  className="rounded-2xl shadow-2xl object-cover" 
+                />
                 
                 {/* Floating Elements */}
                 <motion.div animate={{ y: [-10, 10, -10] }} transition={{ duration: 4, repeat: Infinity }} className="absolute -top-6 -left-6 bg-[#1e293b] p-4 rounded-xl shadow-xl border border-slate-700">
