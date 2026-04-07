@@ -287,10 +287,10 @@ export default function Home() {
             {pricingPlans.map((plan, idx) => (
               <div 
                 key={idx} 
-                className={`bg-white rounded-2xl transition-all duration-300 flex flex-col ${
+                className={`bg-white rounded-2xl transition-all duration-300 flex flex-col hover:shadow-2xl hover:z-20 ${
                   plan.popular 
-                    ? 'border-2 border-blue-600 shadow-xl lg:-translate-y-4 relative' 
-                    : 'border border-slate-200 shadow-sm hover:shadow-md'
+                    ? 'border-2 border-blue-600 shadow-xl lg:-translate-y-4 lg:hover:-translate-y-6 relative z-10' 
+                    : 'border border-slate-200 shadow-sm hover:-translate-y-2 relative z-0'
                 }`}
               >
                 {plan.popular && (
