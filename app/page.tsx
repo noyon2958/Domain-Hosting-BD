@@ -139,11 +139,11 @@ export default function Home() {
                           <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
                           <span className="text-xs text-slate-600 font-medium">Online Now</span>
                         </div>
-                        <p className="text-lg font-black text-blue-700">+880 1325-875955</p>
+                        <p className="text-lg font-black text-blue-700">01750749652</p>
                       </div>
-                      <button className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2 mt-auto">
+                      <a href="https://wa.me/8801750749652" target="_blank" rel="noopener noreferrer" className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2 mt-auto">
                         <MessageCircle className="w-4 h-4" /> Chat with Us
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </div>
