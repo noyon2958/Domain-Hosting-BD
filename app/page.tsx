@@ -6,593 +6,551 @@ import {
   Globe, Headphones, ArrowRight, Menu, PlayCircle,
   Cloud, Cpu, RefreshCw, Lock, ChevronRight, Star,
   DownloadCloud, UploadCloud, Activity,
-  Compass, Database, Code, ShoppingBag, HelpCircle, MessageCircle
+  Compass, Database, Code, ShoppingBag, HelpCircle, MessageCircle,
+  ChevronDown, Check, X
 } from 'lucide-react';
 import * as motion from 'motion/react-client';
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as any } }
-};
+// --- DATA ---
+const pricingPlans = [
+  {
+    name: 'Basic',
+    desc: 'Perfect for personal blogs, portfolio sites, or small business websites',
+    prices: { 'Monthly': 350, 'Yearly': 200, '3 Years': 111 },
+    oldPrice: '৳200/mo',
+    features: ['5 GB NVMe Storage', '~10K Monthly Visitors', 'Standard Website Speed', '2 Domain Hosted', 'Lifetime Free SSL', 'One Click WordPress Install', 'Unlimited Bandwidth', '5 Email Accounts'],
+    popular: false
+  },
+  {
+    name: 'Starter',
+    desc: 'Ideal for multiple sites with storage, WordPress & Laravel features',
+    prices: { 'Monthly': 450, 'Yearly': 250, '3 Years': 166 },
+    oldPrice: '৳300/mo',
+    features: ['10 GB NVMe Storage', '~50K Monthly Visitors', 'Increased Website Speed', '5 Domain Hosted', 'Lifetime Free SSL', 'One Click WordPress Install', 'Unlimited Bandwidth', '25 Email Accounts'],
+    popular: true
+  },
+  {
+    name: 'Pro',
+    desc: 'Best for growing businesses, eCommerce & landing pages',
+    prices: { 'Monthly': 650, 'Yearly': 400, '3 Years': 249 },
+    oldPrice: '৳500/mo',
+    features: ['20 GB NVMe Storage', '~200K Monthly Visitors', 'Super Fast Website Speed', 'Unlimited Domain Hosted', 'Lifetime Free SSL', 'One Click WordPress Install', 'Unlimited Bandwidth', 'Unlimited Email Accounts'],
+    popular: false
+  },
+  {
+    name: 'Ultimate',
+    desc: 'Maximum power for high traffic businesses and advertising',
+    prices: { 'Monthly': 950, 'Yearly': 600, '3 Years': 416 },
+    oldPrice: '৳800/mo',
+    features: ['50 GB NVMe Storage', '~500K Monthly Visitors', 'Maximize Website Speed', 'Unlimited Domain Hosted', 'Lifetime Free SSL', 'One Click WordPress Install', 'Unlimited Bandwidth', 'Unlimited Email Accounts'],
+    popular: false
+  }
+];
 
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-};
+const features = [
+  { icon: Server, title: 'Latest Control Panel', desc: 'We provide a popular and widely used control panel for our reseller hosting plans. cPanel is the latest version and is protected by advanced security guidelines.' },
+  { icon: Cloud, title: 'Softaculous App Installer', desc: 'Install WordPress and more than 285 other content management systems (CMS) with just a few clicks using our built-in Softaculous app installer.' },
+  { icon: Shield, title: 'Let\'s Encrypt SSL Certs', desc: 'As part of the Let\'s Encrypt SSL option, SSL certificates from Let\'s Encrypt are given for free to all customers. You will never have to worry about the SSL.' },
+  { icon: Zap, title: 'LiteSpeed Web Server', desc: 'A website that loads slowly won\'t be able to rank on Google. We prioritize speed most of all for SEO. We utilize the LiteSpeed web server.' },
+  { icon: Database, title: 'CloudLinux OS', desc: 'CloudLinux OS is what we use to run major server functions like PHP, Node, Python, or Ruby. The server was used by the CloudLinux operating system.' },
+  { icon: Lock, title: 'Built in SSH Terminal', desc: 'As part of our service, we provide SSH access for your project requirements. There are many uses for SSH including logging in and performing operations.' }
+];
+
+const faqCategories = ['General Questions', 'Ordering & Billing', 'Hosting Server', 'Control Panel', 'Support System'];
+const faqs = [
+  { q: "What is Web Hosting?", a: "Web hosting is the service of storing data that keeps websites up and running for users. Every website online has a host server, and almost all use a web host to manage that storage. However, not all web hosts provide the same level of quality." },
+  { q: "What is shared web hosting?", a: "Shared web hosting is a service where multiple websites reside on a single web server connected to the internet. This is generally the most economical option for hosting." },
+  { q: "What is a domain name?", a: "A domain name is your website's equivalent of a physical address. It helps users find your site easily instead of using its IP address." },
+  { q: "How can I trust you?", a: "We have been in the industry for years, serving thousands of satisfied customers with a 99.9% uptime guarantee and 24/7 expert support." },
+  { q: "What's Domain Hosting BD history?", a: "We started with a mission to provide affordable, high-performance hosting solutions to businesses of all sizes, growing into a trusted provider globally." }
+];
 
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [billingCycle, setBillingCycle] = useState<'Monthly' | 'Yearly' | '3 Years'>('3 Years');
+  const [activeFaqTab, setActiveFaqTab] = useState(faqCategories[0]);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-900 overflow-x-hidden">
+    <div className="min-h-screen bg-[#f8fafc] font-sans text-slate-900 overflow-x-hidden">
       
-      {/* Glassmorphic Navbar */}
-      <motion.nav 
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 bg-white/70 backdrop-blur-xl border border-slate-200/50 rounded-full shadow-[0_8px_32px_rgba(16,185,129,0.05)] px-4 sm:px-6 py-3 flex justify-between items-center transition-all"
-      >
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30">
-            <Server className="w-5 h-5 text-white" />
-          </div>
-          <span className="font-bold text-xl sm:text-2xl tracking-tight text-slate-900">
-            DomainHosting<span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">BD</span>
-          </span>
+      {/* Top Flash Sale Banner */}
+      <div className="bg-yellow-400 text-slate-900 text-xs sm:text-sm font-bold py-2 px-4 flex flex-wrap justify-center items-center gap-2 sm:gap-4 z-50 relative">
+        <span>FLASH SALE | Get up to <span className="text-red-600">81% OFF</span> + Free <strong>.COM Domain</strong> ends in</span>
+        <div className="flex gap-1">
+          <span className="bg-white/50 px-2 py-0.5 rounded">01 <span className="text-[10px] font-normal">D</span></span>:
+          <span className="bg-white/50 px-2 py-0.5 rounded">22 <span className="text-[10px] font-normal">H</span></span>:
+          <span className="bg-white/50 px-2 py-0.5 rounded">31 <span className="text-[10px] font-normal">M</span></span>:
+          <span className="bg-white/50 px-2 py-0.5 rounded">58 <span className="text-[10px] font-normal">S</span></span>
         </div>
-        
-        <div className="hidden lg:flex items-center space-x-8">
-          {/* Hosting Mega Menu */}
-          <div className="relative group">
-            <button className="text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors flex items-center gap-1 py-2">
-              Hosting <ChevronRight className="w-3 h-3 rotate-90 transition-transform group-hover:-rotate-90" />
-            </button>
+        <button className="bg-slate-900 text-white px-4 py-1 rounded-full text-xs hover:bg-slate-800 transition-colors">Claim Offer</button>
+      </div>
+
+      {/* Navbar */}
+      <nav className="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
+            <div className="flex items-center gap-2">
+              <span className="font-black text-2xl tracking-tight text-blue-600 flex items-center gap-1">
+                <Server className="w-6 h-6" /> DOMAIN HOSTING BD
+              </span>
+            </div>
             
-            {/* Mega Menu Dropdown */}
-            <div className="absolute top-full left-[-100px] pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
-              <div className="w-[850px] bg-white rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-slate-100 flex overflow-hidden">
-                
-                {/* Left Side: Hosting Options */}
-                <div className="w-[65%] p-8 grid grid-cols-2 gap-x-6 gap-y-8">
-                  {[
-                    { icon: Server, title: 'Web Hosting', desc: 'NVMe SSD server' },
-                    { icon: Cloud, title: 'Cloud Hosting', desc: 'Fast autoscaling server' },
-                    { icon: Compass, title: 'WordPress Hosting', desc: 'Fully Managed WordPress' },
-                    { icon: Globe, title: 'Reseller Hosting', desc: 'Start your Business' },
-                    { icon: Database, title: 'BDIX Hosting', desc: 'Lowest Network Latency' },
-                    { icon: Zap, title: 'Turbo Hosting', desc: 'Fast Speed Guaranteed' },
-                    { icon: Code, title: 'Node.js Hosting', desc: 'JavaScript Runtime' },
-                    { icon: ShoppingBag, title: 'WooCommerce Hosting', desc: 'E-commerce Optimized' },
-                  ].map((item, idx) => (
-                    <a key={idx} href="#" className="flex items-start gap-4 group/item">
-                      <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center text-slate-500 group-hover/item:bg-green-50 group-hover/item:text-green-600 transition-colors flex-shrink-0">
-                        <item.icon className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-slate-900 group-hover/item:text-green-600 transition-colors">{item.title}</h4>
-                        <p className="text-xs text-slate-500 mt-1">{item.desc}</p>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-
-                {/* Right Side: Support */}
-                <div className="w-[35%] bg-slate-50 p-8 border-l border-slate-100 flex flex-col">
-                  <div className="flex items-center gap-2 text-slate-900 font-bold mb-3">
-                    <HelpCircle className="w-5 h-5 text-green-600" />
-                    Need help choosing a plan?
-                  </div>
-                  <p className="text-xs text-slate-500 mb-6 leading-relaxed">
-                    Get instant help from our experts via WhatsApp. We&apos;re here for you 24/7!
-                  </p>
-                  
-                  <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-6 shadow-sm">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                      <span className="text-xs text-slate-500 font-medium">Online Now</span>
+            {/* Desktop Links */}
+            <div className="hidden lg:flex items-center space-x-1">
+              <a href="#" className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Pricing</a>
+              <a href="#" className="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-md shadow-sm shadow-blue-600/20">AI Builder <span className="bg-yellow-400 text-slate-900 text-[10px] px-1.5 py-0.5 rounded ml-1">NEW</span></a>
+              
+              {/* Mega Menu: Hosting */}
+              <div className="relative group">
+                <button className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1">
+                  Hosting <ChevronDown className="w-3 h-3 transition-transform group-hover:rotate-180" />
+                </button>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="w-[800px] bg-white rounded-xl shadow-xl border border-slate-100 flex overflow-hidden">
+                    <div className="w-[65%] p-6 grid grid-cols-2 gap-4">
+                      {[
+                        { icon: Server, title: 'Web Hosting', desc: 'NVMe SSD server' },
+                        { icon: Cloud, title: 'Cloud Hosting', desc: 'Fast autoscaling server' },
+                        { icon: Compass, title: 'WordPress Hosting', desc: 'Fully Managed WordPress' },
+                        { icon: Globe, title: 'Reseller Hosting', desc: 'Start your Business' },
+                        { icon: Database, title: 'BDIX Hosting', desc: 'Lowest Network Latency' },
+                        { icon: Zap, title: 'Turbo Hosting', desc: 'Fast Speed Guaranteed' },
+                      ].map((item, idx) => (
+                        <a key={idx} href="#" className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group/item">
+                          <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 group-hover/item:text-blue-600 transition-colors">
+                            <item.icon className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-slate-900 group-hover/item:text-blue-600 transition-colors">{item.title}</h4>
+                            <p className="text-xs text-slate-500">{item.desc}</p>
+                          </div>
+                        </a>
+                      ))}
                     </div>
-                    <p className="text-xs text-slate-500 mb-1">Chat with us on WhatsApp</p>
-                    <p className="text-lg font-black text-green-600">01750749652</p>
+                    <div className="w-[35%] bg-slate-50 p-6 border-l border-slate-100 flex flex-col">
+                      <div className="flex items-center gap-2 text-slate-900 font-bold mb-2 text-sm">
+                        <HelpCircle className="w-4 h-4 text-blue-600" /> Need help choosing?
+                      </div>
+                      <p className="text-xs text-slate-500 mb-4">Get instant help from our experts via WhatsApp. 24/7!</p>
+                      <div className="bg-blue-50 rounded-lg border border-blue-100 p-4 mb-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                          <span className="text-xs text-slate-600 font-medium">Online Now</span>
+                        </div>
+                        <p className="text-lg font-black text-blue-700">+880 1325-875955</p>
+                      </div>
+                      <button className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2 mt-auto">
+                        <MessageCircle className="w-4 h-4" /> Chat with Us
+                      </button>
+                    </div>
                   </div>
-
-                  <button className="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-xl transition-colors flex items-center justify-center gap-2 shadow-md shadow-green-600/20 mt-auto">
-                    <MessageCircle className="w-4 h-4" /> Chat with Us
-                  </button>
                 </div>
               </div>
+
+              {['Domain', 'Server', 'Solutions', 'Tools'].map((item) => (
+                <button key={item} className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1">
+                  {item} <ChevronDown className="w-3 h-3" />
+                </button>
+              ))}
             </div>
-          </div>
 
-          {['Domain', 'Server', 'Solutions', 'Tools'].map((item) => (
-            <a key={item} href="#" className="text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors flex items-center gap-1 py-2">
-              {item} <ChevronRight className="w-3 h-3 rotate-90" />
-            </a>
-          ))}
-        </div>
-
-        <div className="hidden md:flex items-center space-x-4">
-          <a href="#" className="text-sm font-bold text-slate-600 hover:text-green-600 transition-colors">Login</a>
-          <motion.a 
-            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(16, 185, 129, 0.4)" }}
-            whileTap={{ scale: 0.95 }}
-            href="#" 
-            className="px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-full transition-all"
-          >
-            Dashboard
-          </motion.a>
-        </div>
-
-        <button 
-          className="lg:hidden text-slate-600 hover:text-green-600"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          <Menu className="w-6 h-6" />
-        </button>
-
-        {/* Mobile Menu Dropdown */}
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="absolute top-full left-0 right-0 mt-4 p-4 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-xl lg:hidden flex flex-col gap-4"
-          >
-            {['Hosting', 'Domain', 'Server', 'Solutions', 'Tools'].map((item) => (
-              <a key={item} href="#" className="text-base font-semibold text-slate-700 hover:text-green-600 p-2 border-b border-slate-100">
-                {item}
-              </a>
-            ))}
-            <div className="flex flex-col gap-3 mt-2">
-              <a href="#" className="text-center text-base font-bold text-slate-700 hover:text-green-600 py-2">Login</a>
-              <a href="#" className="text-center py-3 text-base font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl">
+            {/* Right Actions */}
+            <div className="hidden md:flex items-center space-x-4">
+              <button className="text-slate-600 hover:text-blue-600"><Search className="w-5 h-5" /></button>
+              <button className="px-6 py-2 text-sm font-bold text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50 transition-colors">
                 Dashboard
-              </a>
+              </button>
             </div>
-          </motion.div>
+
+            {/* Mobile Toggle */}
+            <button className="lg:hidden text-slate-600" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-slate-200 p-4 flex flex-col gap-2 shadow-xl">
+            {['Pricing', 'Hosting', 'Domain', 'Server', 'Solutions', 'Tools'].map((item) => (
+              <a key={item} href="#" className="p-3 text-sm font-bold text-slate-700 border-b border-slate-100 hover:text-blue-600">{item}</a>
+            ))}
+            <button className="mt-4 w-full py-3 text-sm font-bold text-blue-600 border border-blue-600 rounded-lg">Dashboard</button>
+          </div>
         )}
-      </motion.nav>
+      </nav>
 
-      {/* Hero Section with Animated Multi-Color Background */}
-      <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-40 overflow-hidden rounded-b-[3rem] lg:rounded-b-[5rem] bg-white">
-        {/* Animated Background Blobs (Green/Teal/Emerald) */}
-        <motion.div 
-          animate={{ scale: [1, 1.2, 1], x: [0, 100, 0], y: [0, 50, 0] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] rounded-full bg-green-200/40 blur-[120px] -z-10"
-        />
-        <motion.div 
-          animate={{ scale: [1, 1.5, 1], x: [0, -100, 0], y: [0, -50, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[20%] -right-[10%] w-[60%] h-[60%] rounded-full bg-emerald-200/40 blur-[120px] -z-10"
-        />
-        <motion.div 
-          animate={{ scale: [1, 1.3, 1], x: [0, 50, 0], y: [0, 100, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-[20%] left-[20%] w-[50%] h-[50%] rounded-full bg-teal-100/50 blur-[120px] -z-10"
-        />
-
+      {/* Hero Section */}
+      <section className="bg-[#0b1b42] pt-16 pb-24 relative overflow-hidden">
+        {/* Background Accents */}
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div 
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
-              className="text-left"
-            >
-              <motion.div variants={fadeIn} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-200 text-green-700 text-sm font-bold mb-8 shadow-sm">
-                <span className="flex h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.8)]"></span>
-                Trusted by 6,400+ Businesses
-              </motion.div>
+            <div className="text-left">
+              <p className="text-yellow-400 font-bold text-sm mb-4 tracking-wide">Everything You Need to Create a Website</p>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
+                Get Fastest Hosting<br />Up to 81% Discount
+              </h1>
               
-              <motion.h1 variants={fadeIn} className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
-                10x Faster Hosting.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 drop-shadow-sm">
-                  Launch in Minutes.
-                </span>
-              </motion.h1>
-              
-              <motion.p variants={fadeIn} className="text-lg md:text-xl text-slate-600 max-w-xl mb-10 leading-relaxed font-medium">
-                Get blazing-fast NVMe SSD hosting, free SSL, and 24/7 expert support so you can focus on growing your business, not managing servers.
-              </motion.p>
-              
-              <motion.div variants={fadeIn} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <motion.a 
-                  whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(16, 185, 129, 0.4)" }}
-                  whileTap={{ scale: 0.95 }}
-                  href="#pricing" 
-                  className="w-full sm:w-auto px-8 py-4 text-base font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-full transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-500/30"
-                >
-                  Start My Hosting Now <ArrowRight className="w-5 h-5" />
-                </motion.a>
-                <motion.a 
-                  whileHover={{ scale: 1.05, backgroundColor: "#f8fafc" }}
-                  whileTap={{ scale: 0.95 }}
-                  href="#features" 
-                  className="w-full sm:w-auto px-8 py-4 text-base font-bold text-slate-700 bg-white border border-slate-200 rounded-full transition-all flex items-center justify-center gap-2 shadow-sm"
-                >
-                  View Pricing
-                </motion.a>
-              </motion.div>
+              <ul className="space-y-3 mb-8">
+                {['Free .COM Domain with Yearly', 'Genuine & Latest Control Panel', 'Free WildCard SSL for Lifetime'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-white/90 font-medium">
+                    <CheckCircle2 className="w-5 h-5 text-blue-400" /> {item}
+                  </li>
+                ))}
+              </ul>
 
-              <motion.div variants={fadeIn} className="mt-10 flex items-center gap-2 text-slate-500 text-sm font-medium">
-                <Headphones className="w-5 h-5 text-green-500" />
-                24/7 Expert Support. We&apos;re here to help.
-              </motion.div>
-            </motion.div>
-
-            {/* Right Side Abstract Graphic */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="hidden lg:block relative"
-            >
-              <div className="relative w-full aspect-square max-w-lg mx-auto">
-                {/* Center Main Server */}
-                <motion.div 
-                  animate={{ y: [-10, 10, -10] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-white/80 backdrop-blur-2xl border border-green-100 rounded-3xl shadow-[0_0_50px_rgba(16,185,129,0.2)] flex flex-col items-center justify-center z-20"
-                >
-                  <Server className="w-16 h-16 text-green-500 mb-2" />
-                  <span className="text-slate-800 font-bold text-lg">Web Hosting</span>
-                </motion.div>
-
-                {/* Orbiting Elements */}
+              {/* Hero Timer */}
+              <div className="flex gap-4 mb-8">
                 {[
-                  { icon: Cloud, label: "Cloud Hosting", color: "text-green-500", pos: "top-0 left-1/4", delay: 0 },
-                  { icon: Zap, label: "99.9% Uptime", color: "text-emerald-500", pos: "top-1/4 right-0", delay: 1 },
-                  { icon: Shield, label: "Free SSL", color: "text-teal-500", pos: "bottom-1/4 right-10", delay: 2 },
-                  { icon: Globe, label: "Global CDN", color: "text-green-600", pos: "bottom-0 left-1/3", delay: 3 },
-                  { icon: Activity, label: "NVMe SSD", color: "text-emerald-600", pos: "top-1/3 -left-4", delay: 4 },
-                ].map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    animate={{ y: [-15, 15, -15] }}
-                    transition={{ duration: 5, delay: item.delay, repeat: Infinity, ease: "easeInOut" }}
-                    className={`absolute ${item.pos} bg-white backdrop-blur-xl border border-slate-100 px-4 py-3 rounded-2xl flex items-center gap-3 shadow-xl z-10`}
-                  >
-                    <item.icon className={`w-6 h-6 ${item.color}`} />
-                    <span className="text-slate-700 text-sm font-bold whitespace-nowrap">{item.label}</span>
-                  </motion.div>
+                  { val: '01', label: 'DAYS' },
+                  { val: '22', label: 'HOURS' },
+                  { val: '31', label: 'MINS' },
+                  { val: '58', label: 'SECS' }
+                ].map((t, i) => (
+                  <div key={i} className="bg-white text-slate-900 rounded-lg w-16 h-16 flex flex-col items-center justify-center shadow-lg">
+                    <span className="text-xl font-black">{t.val}</span>
+                    <span className="text-[10px] font-bold text-slate-500">{t.label}</span>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+
+              <button className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-full transition-colors flex items-center gap-2 shadow-lg shadow-blue-600/30">
+                <Cloud className="w-5 h-5" /> Claim Offer Now
+              </button>
+            </div>
+
+            {/* Hero Graphic */}
+            <div className="relative hidden lg:block">
+              <div className="relative w-full max-w-lg mx-auto">
+                <img src="https://picsum.photos/seed/domainhostingbdhero/600/600" alt="Hosting Expert" className="w-full h-auto rounded-2xl shadow-2xl object-cover" />
+                
+                {/* Floating Elements */}
+                <motion.div animate={{ y: [-10, 10, -10] }} transition={{ duration: 4, repeat: Infinity }} className="absolute -top-6 -left-6 bg-[#1e293b] p-4 rounded-xl shadow-xl border border-slate-700">
+                  <div className="text-white font-black text-2xl tracking-widest">SALE</div>
+                </motion.div>
+                
+                <motion.div animate={{ y: [10, -10, 10] }} transition={{ duration: 5, repeat: Infinity }} className="absolute -bottom-6 -right-6 bg-white p-4 rounded-xl shadow-xl flex items-center gap-3">
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                    <Headphones className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="font-black text-slate-900">24/7</div>
+                    <div className="text-xs text-slate-500 font-bold">Expert Support</div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
-
-      {/* Domain Search Section (Glassmorphic Overlap) */}
-      <section className="relative -mt-20 z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-white/80 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(16,185,129,0.08)] border border-green-50 p-8 md:p-10"
-        >
-          <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-8 text-center">Search your Domain Name</h2>
-          
-          <div className="flex flex-col md:flex-row gap-4 mb-10">
-            <div className="relative flex-grow">
-              <div className="absolute inset-y-0 left-0 pl-4 sm:pl-6 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 sm:h-6 sm:w-6 text-green-500" />
-              </div>
-              <input 
-                type="text" 
-                className="block w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-4 sm:py-5 bg-white border-2 border-slate-100 rounded-full text-base sm:text-lg focus:ring-4 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none font-medium shadow-inner" 
-                placeholder="yourdomain.com"
-              />
-            </div>
-            <motion.button 
-              whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(16, 185, 129, 0.4)" }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full md:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-full transition-all whitespace-nowrap text-base sm:text-lg shadow-lg shadow-green-500/20"
-            >
-              Search
-            </motion.button>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8 text-center">
-            {[
-              { tld: '.com', price: '৳1,650/Year', color: 'text-green-600', badge: 'Sale 66% off' },
-              { tld: '.net', price: '৳1,750/Year', color: 'text-slate-800' },
-              { tld: '.org', price: '৳1,650/Year', color: 'text-slate-800', badge: 'Deal 35% off' },
-              { tld: '.xyz', price: '৳599/Year', color: 'text-slate-800' },
-            ].map((domain, idx) => (
-              <motion.div 
-                key={idx} 
-                whileHover={{ y: -5 }}
-                className={`relative px-6 py-4 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all ${domain.badge ? 'ring-2 ring-green-100' : ''}`}
-              >
-                {domain.badge && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-full whitespace-nowrap shadow-sm">
-                    {domain.badge}
-                  </span>
-                )}
-                <span className={`block text-2xl font-black ${domain.color} mb-1`}>{domain.tld}</span>
-                <span className="text-sm font-semibold text-slate-500">{domain.price}</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-32 relative bg-white">
+      <section className="py-20 bg-[#f8fafc] relative -mt-10 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <span className="text-green-600 font-bold tracking-wider uppercase text-sm mb-2 block">Flexible Plans</span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">Select Your Perfect Plan</h2>
-            <p className="text-xl text-slate-600 font-medium">Choose the hosting that fits your needs. All plans include free migration.</p>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Choose Your Perfect Plan</h2>
+            <p className="text-slate-600 font-medium mb-8">You&apos;re just 5 minutes away from a faster website</p>
+            
+            {/* Billing Toggle */}
+            <div className="inline-flex items-center bg-white rounded-full p-1 shadow-sm border border-slate-200">
+              {(['Monthly', 'Yearly', '3 Years'] as const).map((cycle) => (
+                <button
+                  key={cycle}
+                  onClick={() => setBillingCycle(cycle)}
+                  className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${
+                    billingCycle === cycle 
+                      ? 'bg-blue-600 text-white shadow-md' 
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {cycle}
+                </button>
+              ))}
+              <span className="ml-4 mr-4 text-blue-600 font-bold text-sm flex items-center gap-1">
+                <Zap className="w-4 h-4" /> Save 81%
+              </span>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {[
-              { name: 'Cheapest Cloud', desc: 'Fast, secure cloud hosting with 16+ CDN worldwide.', price: '৳79', oldPrice: '৳2,844/First 3 Years', features: ['16+ Global CDN', 'Static Websites', '100% SSD Web Space'] },
-              { name: 'Web Hosting', desc: 'Multi-platform hosting with 24/7 instant support.', price: '৳166', oldPrice: '৳1,995/year', features: ['Industry-Standard cPanel', 'Super Fast Speed', 'E-Commerce Optimized'], popular: true },
-              { name: 'Turbo Hosting', desc: '10x faster NVMe hosting with Cloudflare Pro CDN included.', price: '৳747', oldPrice: '৳8,964/year', features: ['NVMe SSD + LiteSpeed', 'Cloudflare Pro ($240/yr Value)', 'Auto Image Optimizer'] },
-              { name: 'Reseller', desc: 'Start your hosting business with full rebranding.', price: '৳4,999', oldPrice: 'Industry-Standard cPanel/WHM', features: ['Fully White Label', 'Fastest Servers', 'Priority Support'] },
-            ].map((plan, idx) => (
-              <motion.div 
-                key={idx}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeIn}
-                whileHover={{ y: -10 }}
-                className={`relative bg-white rounded-[2rem] p-8 transition-all duration-300 ${plan.popular ? 'border-2 border-green-500 shadow-[0_20px_50px_rgba(16,185,129,0.15)] transform lg:-translate-y-4' : 'border border-slate-200 shadow-lg hover:shadow-xl'}`}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {pricingPlans.map((plan, idx) => (
+              <div 
+                key={idx} 
+                className={`bg-white rounded-2xl transition-all duration-300 flex flex-col ${
+                  plan.popular 
+                    ? 'border-2 border-blue-600 shadow-xl lg:-translate-y-4 relative' 
+                    : 'border border-slate-200 shadow-sm hover:shadow-md'
+                }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-black px-6 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
+                  <div className="bg-blue-600 text-white text-center py-2 text-sm font-bold rounded-t-xl absolute top-0 left-0 w-full -mt-[2px] -ml-[2px] pr-[4px]">
                     Most Popular
                   </div>
                 )}
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${plan.popular ? 'bg-green-100 text-green-600' : 'bg-slate-100 text-slate-600'}`}>
-                  <Cloud className="w-7 h-7" />
-                </div>
-                <h3 className="text-2xl font-black text-slate-900 mb-3">{plan.name}</h3>
-                <p className="text-sm text-slate-600 mb-8 font-medium h-10">{plan.desc}</p>
                 
-                <div className="mb-8">
-                  <div className="flex items-end gap-1 mb-1">
-                    <span className="text-5xl font-black text-slate-900">{plan.price}</span>
-                    <span className="text-slate-500 font-bold mb-1">/month</span>
+                <div className={`p-6 text-center border-b border-slate-100 ${plan.popular ? 'pt-12' : ''}`}>
+                  <div className="w-12 h-12 mx-auto bg-blue-50 rounded-full flex items-center justify-center text-blue-600 mb-4">
+                    <Server className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-bold text-slate-400 line-through">{plan.oldPrice}</span>
+                  <h3 className="text-xl font-black text-slate-900 mb-2">{plan.name}</h3>
+                  <p className="text-xs text-slate-500 h-10 mb-4">{plan.desc}</p>
+                  
+                  <div className="mb-2">
+                    <span className="text-sm text-slate-400 line-through font-medium">{plan.oldPrice}</span>
+                  </div>
+                  <div className="flex justify-center items-start gap-1 mb-2">
+                    <span className="text-lg font-bold text-slate-900 mt-1">৳</span>
+                    <span className="text-5xl font-black text-slate-900 tracking-tighter">{plan.prices[billingCycle]}</span>
+                    <span className="text-sm text-slate-500 font-medium self-end mb-2">/mo</span>
+                  </div>
+                  <div className="text-xs font-bold text-blue-600 bg-blue-50 py-1 px-3 rounded-full inline-block mb-6">
+                    Same Price Renew, Guaranteed
+                  </div>
+                  
+                  <button className={`w-full py-3 rounded-full font-bold text-sm transition-colors ${
+                    plan.popular 
+                      ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                      : 'bg-white text-blue-600 border border-blue-600 hover:bg-blue-50'
+                  }`}>
+                    {plan.popular ? 'Get Started' : 'Get Pro Now'}
+                  </button>
+                  <p className="text-[10px] text-slate-400 mt-3">৳{plan.prices[billingCycle] * (billingCycle === 'Monthly' ? 1 : billingCycle === 'Yearly' ? 12 : 36)} billed every {billingCycle.toLowerCase()}</p>
                 </div>
 
-                <ul className="space-y-4 mb-10">
-                  {plan.features.map((feat, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm font-semibold text-slate-700">
-                      <CheckCircle2 className={`w-5 h-5 mt-0.5 flex-shrink-0 ${plan.popular ? 'text-green-500' : 'text-slate-400'}`} />
-                      {feat}
-                    </li>
-                  ))}
-                </ul>
-
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`w-full py-4 rounded-2xl font-bold text-lg transition-all ${plan.popular ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/30' : 'bg-white border-2 border-slate-200 text-slate-700 hover:border-green-500 hover:text-green-600 hover:bg-green-50'}`}
-                >
-                  Select Plan <ArrowRight className="inline-block w-5 h-5 ml-1 -mt-1" />
-                </motion.button>
-              </motion.div>
+                <div className="p-6 flex-grow">
+                  <h4 className="font-bold text-slate-900 mb-4">Features</h4>
+                  <ul className="space-y-3">
+                    {plan.features.map((feat, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                        <Check className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                        {feat}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div className="p-4 border-t border-slate-100 text-center">
+                  <button className="text-blue-600 text-sm font-bold flex items-center justify-center gap-1 w-full hover:text-blue-700">
+                    See All Features <ChevronDown className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
             ))}
-          </div>
-
-          <div className="mt-16 flex flex-wrap justify-center gap-8 text-slate-600 font-bold text-sm">
-            <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500" /> 30-Day Money Back</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500" /> Free Migration</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500" /> 24/7 Expert Support</div>
           </div>
         </div>
       </section>
 
-      {/* Migration Section */}
-      <section className="py-24 relative overflow-hidden bg-white">
+      {/* Domain Search Section */}
+      <section className="py-16 bg-white border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-[3rem] border border-green-100 shadow-[0_20px_60px_rgba(16,185,129,0.08)] p-10 lg:p-20 relative overflow-hidden">
-            {/* Decorative background blur inside card */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-green-400/10 to-emerald-400/10 blur-3xl rounded-full -z-10"></div>
-            
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <span className="inline-block py-1.5 px-4 rounded-full bg-green-100 text-green-700 font-bold text-sm mb-6">
-                  Free Migration Service
-                </span>
-                <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
-                  Moving From <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">Another Host?</span>
-                </h2>
-                <p className="text-lg text-slate-600 font-medium mb-10 leading-relaxed">
-                  Our expert team handles everything. zero downtime, zero hassle. Just sit back while we migrate your website seamlessly.
-                </p>
-                
-                <div className="grid sm:grid-cols-2 gap-6 mb-10">
-                  {[
-                    { icon: DownloadCloud, title: "Backup", desc: "Complete site backup" },
-                    { icon: RefreshCw, title: "Transfer", desc: "Secure data migration" },
-                    { icon: UploadCloud, title: "Restore", desc: "Go live instantly" },
-                    { icon: Shield, title: "Seamless", desc: "Zero downtime guaranteed" }
-                  ].map((step, idx) => (
-                    <div key={idx} className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 text-white flex items-center justify-center shadow-lg shadow-green-500/20 flex-shrink-0">
-                        <step.icon className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-slate-900">{step.title}</h4>
-                        <p className="text-xs text-slate-500 font-medium">{step.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+          <div className="grid lg:grid-cols-3 gap-8 items-center">
+            <div className="lg:col-span-2">
+              <h2 className="text-2xl font-black text-slate-900 mb-6">Search your Domain Name</h2>
+              <div className="flex flex-col sm:flex-row gap-2 mb-8">
+                <div className="relative flex-grow">
+                  <input 
+                    type="text" 
+                    className="w-full pl-4 pr-4 py-4 bg-white border border-slate-300 rounded-lg text-lg focus:ring-2 focus:ring-blue-500 outline-none" 
+                    placeholder="yourdomain.com"
+                  />
                 </div>
-
-                <motion.button 
-                  whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(16, 185, 129, 0.4)" }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold rounded-full transition-all flex items-center gap-2 shadow-lg"
-                >
-                  Start Free Migration <ArrowRight className="w-5 h-5" />
-                </motion.button>
+                <button className="px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                  <Search className="w-5 h-5" /> Search
+                </button>
               </div>
-
-              {/* Graphic Side */}
-              <div className="relative h-[300px] lg:h-[400px] flex items-center justify-center mt-12 lg:mt-0 scale-90 sm:scale-100">
-                <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-0 border-[1px] border-dashed border-green-300 rounded-full opacity-50"
-                />
-                <motion.div 
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-10 border-[1px] border-dashed border-emerald-300 rounded-full opacity-50"
-                />
-                
-                {/* Center Logo */}
-                <div className="w-20 h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-green-500/40 z-20 relative">
-                  <span className="text-4xl lg:text-5xl font-black text-white">H</span>
-                </div>
-
-                {/* Orbiting Nodes */}
-                <motion.div animate={{ y: [-10, 10, -10] }} transition={{ duration: 3, repeat: Infinity }} className="absolute top-4 left-4 lg:top-10 lg:left-10 bg-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl shadow-lg font-bold text-xs lg:text-sm text-slate-700 border border-slate-100">HostGator</motion.div>
-                <motion.div animate={{ y: [10, -10, 10] }} transition={{ duration: 4, repeat: Infinity }} className="absolute bottom-4 right-4 lg:bottom-10 lg:right-10 bg-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl shadow-lg font-bold text-xs lg:text-sm text-slate-700 border border-slate-100">GoDaddy</motion.div>
-                <motion.div animate={{ y: [-8, 8, -8] }} transition={{ duration: 3.5, repeat: Infinity }} className="absolute top-16 -right-2 lg:top-20 lg:right-0 bg-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl shadow-lg font-bold text-xs lg:text-sm text-slate-700 border border-slate-100">Namecheap</motion.div>
-                <motion.div animate={{ y: [8, -8, 8] }} transition={{ duration: 4.5, repeat: Infinity }} className="absolute bottom-16 -left-2 lg:bottom-20 lg:left-0 bg-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl shadow-lg font-bold text-xs lg:text-sm text-slate-700 border border-slate-100">Hostinger</motion.div>
+              <div className="flex flex-wrap gap-6">
+                {[
+                  { tld: '.com', price: '৳1,650/Year', color: 'text-blue-600' },
+                  { tld: '.net', price: '৳1,750/Year', color: 'text-slate-900' },
+                  { tld: '.org', price: '৳1,650/Year', color: 'text-slate-900' },
+                  { tld: '.xyz', price: '৳599/Year', color: 'text-slate-900' },
+                ].map((d, i) => (
+                  <div key={i}>
+                    <span className={`font-black text-lg ${d.color}`}>{d.tld}</span>
+                    <span className="text-sm text-slate-500 ml-2">{d.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="flex gap-4 lg:justify-end">
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 text-center flex-1 lg:flex-none lg:w-40">
+                <div className="text-sm font-bold text-slate-600 mb-2">Sale</div>
+                <div className="text-3xl font-black text-slate-900 mb-2">.com</div>
+                <div className="bg-blue-600 text-white text-xs font-bold py-1 px-3 rounded-full inline-block mb-2">66% off</div>
+                <div className="text-sm text-blue-600 font-bold">৳1,650/year</div>
+              </div>
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 text-center flex-1 lg:flex-none lg:w-40">
+                <div className="text-sm font-bold text-slate-600 mb-2">Deal</div>
+                <div className="text-3xl font-black text-slate-900 mb-2">.org</div>
+                <div className="bg-blue-600 text-white text-xs font-bold py-1 px-3 rounded-full inline-block mb-2">35% off</div>
+                <div className="text-sm text-blue-600 font-bold">৳1,650/year</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials / Success Stories */}
-      <section className="py-24 bg-white">
+      {/* Why Choose Web Hosting */}
+      <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-green-600 font-bold tracking-wider uppercase text-sm mb-2 block">Customer Stories</span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">Success Stories</h2>
-            <p className="text-lg text-slate-600 font-medium">Real businesses sharing their Hostnin experience</p>
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Why Choose Web Hosting?</h2>
+            <p className="text-slate-600 font-medium">With our Web Hosting plans, you&apos;ll receive more resources for less money, ensuring the reliability you can count on. Starting your own business with Domain Hosting BD is easier than you think!</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item) => (
-              <motion.div 
-                key={item}
-                whileHover={{ y: -10 }}
-                className="group relative rounded-[2.5rem] overflow-hidden shadow-xl cursor-pointer border border-slate-100"
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent z-10"></div>
-                <img 
-                  src={`https://picsum.photos/seed/testimonial${item}/600/800`} 
-                  alt="Customer" 
-                  className="w-full h-[450px] object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 z-20 flex flex-col justify-end p-8">
-                  <div className="w-16 h-16 bg-green-600/90 backdrop-blur-sm rounded-full flex items-center justify-center mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
-                    <PlayCircle className="w-8 h-8 text-white fill-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-2 leading-tight">&quot;The best hosting company I have ever seen in BD&quot;</h3>
-                  <p className="text-white/80 font-medium">Md. Ariful Islam</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feat, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-2xl border border-slate-200 hover:shadow-lg transition-shadow">
+                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+                  <feat.icon className="w-6 h-6" />
                 </div>
-              </motion.div>
+                <h3 className="text-lg font-bold text-slate-900 mb-3">{feat.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{feat.desc}</p>
+              </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 30 Day Money Back */}
+      <section className="py-16 bg-white border-y border-slate-200">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-black text-slate-900 mb-4">30 day Money-back Guarantee</h2>
+          <p className="text-slate-600 mb-8">There is no risk with our 30-day money back guarantee. Stay safe with assurance of refund.</p>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-8">
+            <div className="flex items-center gap-3 text-sm font-bold text-slate-700">
+              <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center"><Check className="w-4 h-4" /></div>
+              Easily Upgrade or Downgrade
+            </div>
+            <div className="flex items-center gap-3 text-sm font-bold text-slate-700">
+              <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center"><Check className="w-4 h-4" /></div>
+              Get Notified before suspension
+            </div>
+            <div className="flex items-center gap-3 text-sm font-bold text-slate-700">
+              <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center"><Check className="w-4 h-4" /></div>
+              Refund process within an hour
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQs */}
+      <section className="py-20 bg-[#f8fafc]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">FAQs: Your questions, our answers</h2>
+            <p className="text-slate-600 font-medium">Here you will find answers to the most frequently asked questions. If you still need assistance, feel free to contact our live support team.</p>
+          </div>
+
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Tabs */}
+            <div className="w-full lg:w-1/4 flex flex-col gap-2">
+              {faqCategories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveFaqTab(cat)}
+                  className={`text-left px-6 py-4 rounded-xl font-bold text-sm transition-colors flex items-center gap-3 ${
+                    activeFaqTab === cat 
+                      ? 'bg-blue-600 text-white shadow-md' 
+                      : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                  }`}
+                >
+                  <HelpCircle className={`w-5 h-5 ${activeFaqTab === cat ? 'text-white' : 'text-blue-600'}`} />
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {/* Accordion */}
+            <div className="w-full lg:w-3/4 flex flex-col gap-4">
+              {faqs.map((faq, idx) => (
+                <div key={idx} className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+                  <button 
+                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                    className="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none"
+                  >
+                    <span className="font-bold text-slate-900">{faq.q}</span>
+                    <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${openFaq === idx ? 'rotate-180' : ''}`} />
+                  </button>
+                  {openFaq === idx && (
+                    <div className="px-6 pb-5 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-4">
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative bg-white pt-32 pb-12 overflow-hidden mt-12 border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* CTA Box inside Footer */}
-          <div className="bg-green-50 border border-green-100 rounded-[3rem] p-12 text-center mb-20 shadow-lg">
-            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6">Try Hosting Risk-Free for 30 Days</h2>
-            <p className="text-slate-600 text-lg mb-10 font-medium">30 Days to Decide. Full Refund Guaranteed.</p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <motion.button 
-                whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(16, 185, 129, 0.3)" }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto px-8 sm:px-10 py-4 bg-green-600 text-white font-black rounded-full transition-all text-base sm:text-lg shadow-md"
-              >
-                Get The Offer
-              </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.05, backgroundColor: "#f0fdf4" }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto px-8 sm:px-10 py-4 bg-white border border-green-200 text-green-700 font-bold rounded-full transition-all text-base sm:text-lg shadow-sm"
-              >
-                Chat with an Expert
-              </motion.button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12 mb-16">
+      <footer className="bg-[#0b1b42] pt-20 pb-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-16">
             <div className="col-span-2 lg:col-span-2">
               <div className="flex items-center gap-2 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
-                  <Server className="w-5 h-5 text-white" />
-                </div>
-                <span className="font-bold text-3xl tracking-tight text-slate-900">
-                  DomainHosting<span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-500">BD</span>
+                <span className="font-black text-3xl tracking-tight text-white flex items-center gap-2">
+                  <Server className="w-8 h-8 text-blue-500" /> DOMAIN HOSTING BD
                 </span>
               </div>
-              <p className="text-slate-500 text-sm leading-relaxed mb-8 max-w-sm font-medium">
-                Premium web hosting solutions with blazing-fast speeds, rock-solid security, and 24/7 expert support. Trusted by thousands of businesses worldwide.
+              <p className="text-slate-400 text-sm leading-relaxed mb-8 max-w-sm">
+                Premium web hosting solutions with blazing-fast speeds, rock-solid security, and 24/7 expert support.
               </p>
               <div className="flex gap-4">
+                {/* Social Icons Placeholder */}
                 {[1, 2, 3, 4].map((i) => (
-                  <motion.a 
-                    key={i}
-                    whileHover={{ scale: 1.2, y: -5 }}
-                    href="#" 
-                    className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-green-100 hover:text-green-600 transition-all border border-slate-200"
-                  >
-                    <Star className="w-4 h-4" />
-                  </motion.a>
+                  <a key={i} href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-blue-600 transition-colors">
+                    <Globe className="w-4 h-4" />
+                  </a>
                 ))}
               </div>
             </div>
             
             <div>
-              <h4 className="text-slate-900 font-bold text-lg mb-6">Hosting</h4>
-              <ul className="space-y-4 text-sm font-medium text-slate-500">
-                <li><a href="#" className="hover:text-green-600 transition-colors">Web Hosting</a></li>
-                <li><a href="#" className="hover:text-green-600 transition-colors">BDIX Hosting</a></li>
-                <li><a href="#" className="hover:text-green-600 transition-colors">WordPress Hosting</a></li>
-                <li><a href="#" className="hover:text-green-600 transition-colors">VPS Hosting</a></li>
+              <h4 className="text-white font-bold mb-6">Hosting</h4>
+              <ul className="space-y-3 text-sm text-slate-400">
+                <li><a href="#" className="hover:text-white transition-colors">Web Hosting</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">BDIX Hosting</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">WordPress Hosting</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">VPS Hosting</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-slate-900 font-bold text-lg mb-6">Company</h4>
-              <ul className="space-y-4 text-sm font-medium text-slate-500">
-                <li><a href="#" className="hover:text-green-600 transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-green-600 transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-green-600 transition-colors">Affiliate Program</a></li>
-                <li><a href="#" className="hover:text-green-600 transition-colors">Terms of Service</a></li>
+              <h4 className="text-white font-bold mb-6">Company</h4>
+              <ul className="space-y-3 text-sm text-slate-400">
+                <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Affiliate Program</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-slate-900 font-bold text-lg mb-6">Support</h4>
-              <ul className="space-y-4 text-sm font-medium text-slate-500">
-                <li><a href="#" className="hover:text-green-600 transition-colors">Client Area</a></li>
-                <li><a href="#" className="hover:text-green-600 transition-colors">Submit Ticket</a></li>
-                <li><a href="#" className="hover:text-green-600 transition-colors">Knowledge Base</a></li>
-                <li><a href="#" className="hover:text-green-600 transition-colors">System Status</a></li>
+              <h4 className="text-white font-bold mb-6">Support</h4>
+              <ul className="space-y-3 text-sm text-slate-400">
+                <li><a href="#" className="hover:text-white transition-colors">Client Area</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Submit Ticket</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Knowledge Base</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">System Status</a></li>
               </ul>
             </div>
           </div>
           
-          <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-sm text-slate-500 font-medium">© {new Date().getFullYear()} DomainHostingBD. All rights reserved.</p>
-            <div className="flex items-center gap-4 text-sm text-slate-500 font-medium">
-              <span>Payment Methods:</span>
-              <div className="flex gap-2">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="w-12 h-8 bg-slate-100 rounded-md border border-slate-200"></div>
-                ))}
-              </div>
+          <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-slate-400">© {new Date().getFullYear()} Domain Hosting BD. All rights reserved.</p>
+            <div className="flex gap-2">
+              <span className="text-sm text-slate-400 mr-2">Pay With:</span>
+              {/* Payment Icons Placeholder */}
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="w-10 h-6 bg-white/20 rounded"></div>
+              ))}
             </div>
           </div>
         </div>
