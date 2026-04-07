@@ -100,14 +100,14 @@ export default function Home() {
             
             {/* Desktop Links */}
             <div className="hidden lg:flex items-center space-x-1">
-              <a href="#" className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Pricing</a>
+              <a href="#pricing" className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Pricing</a>
               <a href="#" className="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-md shadow-sm shadow-blue-600/20">AI Builder <span className="bg-yellow-400 text-slate-900 text-[10px] px-1.5 py-0.5 rounded ml-1">NEW</span></a>
               
               {/* Mega Menu: Hosting */}
               <div className="relative group">
-                <button className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1">
+                <a href="#features" className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1">
                   Hosting <ChevronDown className="w-3 h-3 transition-transform group-hover:rotate-180" />
-                </button>
+                </a>
                 <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="w-[800px] bg-white rounded-xl shadow-xl border border-slate-100 flex overflow-hidden">
                     <div className="w-[65%] p-6 grid grid-cols-2 gap-4">
@@ -119,7 +119,7 @@ export default function Home() {
                         { icon: Database, title: 'BDIX Hosting', desc: 'Lowest Network Latency' },
                         { icon: Zap, title: 'Turbo Hosting', desc: 'Fast Speed Guaranteed' },
                       ].map((item, idx) => (
-                        <a key={idx} href="#" className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group/item">
+                        <a key={idx} href="#pricing" className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group/item">
                           <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 group-hover/item:text-blue-600 transition-colors">
                             <item.icon className="w-5 h-5" />
                           </div>
@@ -150,7 +150,10 @@ export default function Home() {
                 </div>
               </div>
 
-              {['Domain', 'Server', 'Solutions', 'Tools'].map((item) => (
+              <a href="#domain" className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1">
+                Domain <ChevronDown className="w-3 h-3" />
+              </a>
+              {['Server', 'Solutions', 'Tools'].map((item) => (
                 <button key={item} className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1">
                   {item} <ChevronDown className="w-3 h-3" />
                 </button>
@@ -175,8 +178,15 @@ export default function Home() {
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-slate-200 p-4 flex flex-col gap-2 shadow-xl">
-            {['Pricing', 'Hosting', 'Domain', 'Server', 'Solutions', 'Tools'].map((item) => (
-              <a key={item} href="#" className="p-3 text-sm font-bold text-slate-700 border-b border-slate-100 hover:text-blue-600">{item}</a>
+            {[
+              { name: 'Pricing', href: '#pricing' },
+              { name: 'Hosting', href: '#features' },
+              { name: 'Domain', href: '#domain' },
+              { name: 'Server', href: '#' },
+              { name: 'Solutions', href: '#' },
+              { name: 'Tools', href: '#' }
+            ].map((item) => (
+              <a key={item.name} href={item.href} onClick={() => setIsMobileMenuOpen(false)} className="p-3 text-sm font-bold text-slate-700 border-b border-slate-100 hover:text-blue-600">{item.name}</a>
             ))}
             <button className="mt-4 w-full py-3 text-sm font-bold text-blue-600 border border-blue-600 rounded-lg">Dashboard</button>
           </div>
@@ -184,7 +194,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-[#0b1b42] pt-16 pb-24 relative overflow-hidden">
+      <section id="home" className="bg-[#0b1b42] pt-16 pb-24 relative overflow-hidden">
         {/* Background Accents */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
         
@@ -256,7 +266,7 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-20 bg-[#f8fafc] relative -mt-10 z-20">
+      <section id="pricing" className="py-20 bg-[#f8fafc] relative -mt-10 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Choose Your Perfect Plan</h2>
@@ -352,7 +362,7 @@ export default function Home() {
       </section>
 
       {/* Domain Search Section */}
-      <section className="py-16 bg-white border-y border-slate-200">
+      <section id="domain" className="py-16 bg-white border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8 items-center">
             <div className="lg:col-span-2">
@@ -403,7 +413,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Web Hosting */}
-      <section className="py-20 bg-[#f8fafc]">
+      <section id="features" className="py-20 bg-[#f8fafc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Why Choose Web Hosting?</h2>
@@ -447,7 +457,7 @@ export default function Home() {
       </section>
 
       {/* FAQs */}
-      <section className="py-20 bg-[#f8fafc]">
+      <section id="faq" className="py-20 bg-[#f8fafc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">FAQs: Your questions, our answers</h2>
